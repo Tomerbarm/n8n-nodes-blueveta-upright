@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- BlueVeta favicon — sky ✦ on a rounded navy square.
+       Uses the same ✦ glyph (U+2726) the rest of the site renders. -->
+  <rect width="64" height="64" rx="12" fill="#0c2540"/>
+  <text
+    x="32"
+    y="48"
+    text-anchor="middle"
+    font-size="48"
+    font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif"
+    fill="#7ec8f0"
+  >✦</text>
+</svg>

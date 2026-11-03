@@ -1,0 +1,35 @@
+# Publishes this package to npm with provenance on every GitHub Release —
+# n8n's own community-node verification guidelines (docs.n8n.io, checked
+# 2026-11-03) require packages published this way (public GitHub repo +
+# npm provenance), not a plain manual `npm publish` from a developer machine.
+#
+# Real setup still needed before this can run for real (not done by this
+# commit — needs npm account access, which this session doesn't have):
+#   1. On npmjs.com, under this package's own "Trusted Publisher" settings,
+#      link it to this repo + this workflow file (npm's OIDC trusted-publishing
+#      flow — no NPM_TOKEN secret needed once linked, npm verifies the GitHub
+#      Actions OIDC token directly). This is the modern, recommended path.
+#   2. Cut a real GitHub Release (or push a `v*` tag) to trigger a real publish.
+name: Publish to npm
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write  # required for npm provenance / OIDC trusted publishing
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - run: npm publish --provenance --access public
