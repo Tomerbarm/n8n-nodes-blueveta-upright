@@ -7,29 +7,18 @@ BYOK (bring your own key): this node calls BlueVetaUpright's real, paid API usin
 API key, the same way the direct REST API and the official MCP server both work. Get a key at
 [blueveta.com/upright](https://blueveta.com/upright) — pay-as-you-go, no subscription.
 
-## Real status (2026-11-03)
+## Real status (2026-11-08)
 
-Built and unit-tested (`npm test`, `src/detectCore.test.mjs`, 8/8 passing). Now lives in its own
-real public repo (`github.com/Tomerbarm/n8n-nodes-blueveta-upright`, MIT-licensed, matches n8n's
-own verification requirement that the main private `blueveta-app` repo couldn't satisfy), with a
-`.github/workflows/publish.yml` ready to publish with npm provenance on every GitHub Release.
+**Published and live on npm — `n8n-nodes-blueveta-upright@0.1.0`.** Built and unit-tested
+(`npm test`, `src/detectCore.test.mjs`, 8/8 passing). Lives in its own real public repo
+(`github.com/Tomerbarm/n8n-nodes-blueveta-upright`, MIT-licensed, matches n8n's own verification
+requirement that the main private `blueveta-app` repo couldn't satisfy).
 
-**Still genuinely blocked on two things only Tomer can do:**
+Real next step, not yet done: running `npx @n8n/scan-community-package n8n-nodes-blueveta-upright`
+and submitting for n8n's own verification review via their community forum/GitHub process, for
+listing in n8n's official community-node directory.
 
-1. **npm's own 2FA at publish time** — `npm whoami` confirms the `blueveta-upright` account is
-   logged in, but `npm publish` itself asks for a fresh one-time code from Tomer's own device,
-   separate from the login OTP. A manual publish needs him there once.
-2. **Linking npm's "Trusted Publisher" OIDC setting** (on npmjs.com, under this package's own
-   settings) to this exact repo + the `publish.yml` workflow above — this is what lets the
-   GitHub Action publish with provenance with NO stored npm token, which is what n8n's
-   verification guidelines actually want. This is a one-time setup step inside the npm account
-   itself, which needs Tomer logged in to do.
-
-Once either path completes a first real publish, the remaining real step is running
-`npx @n8n/scan-community-package n8n-nodes-blueveta-upright` and submitting for n8n's own
-verification review via their community forum/GitHub process.
-
-## Install (once published)
+## Install
 
 ```bash
 npm install n8n-nodes-blueveta-upright
