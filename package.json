@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-blueveta-upright",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "n8n community node for BlueVetaUpright — detect and fix sideways/upside-down product photos inside an n8n workflow.",
   "license": "MIT",
   "homepage": "https://blueveta.com/upright",
@@ -21,10 +21,16 @@
   ],
   "n8n": {
     "n8nNodesApiVersion": 1,
-    "credentials": ["dist/credentials/BlueVetaUprightApi.credentials.js"],
-    "nodes": ["dist/nodes/BlueVetaUpright/BlueVetaUpright.node.js"]
+    "credentials": [
+      "dist/credentials/BlueVetaUprightApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/BlueVetaUpright/BlueVetaUpright.node.js"
+    ]
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc && node -e \"require('fs').copyFileSync('nodes/BlueVetaUpright/upright.svg','dist/nodes/BlueVetaUpright/upright.svg')\"",
     "test": "node --test src/detectCore.test.mjs"
