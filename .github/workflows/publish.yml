@@ -22,6 +22,18 @@
 # entirely (safe here, since nothing in this package's own build/test ever
 # needs isolated-vm's compiled binary) without skipping the actual package
 # install itself.
+#
+# REAL BUG FOUND AND FIXED 2026-11-08 (run #2, v0.1.2): npm publish got all
+# the way through building the tarball and SIGNING provenance successfully
+# (real transparency-log entry created, confirmed in the run's own log),
+# then failed with a misleading `404 ... is not in this registry` on the
+# actual registry PUT. Root cause: Node 20's bundled npm (~10.x) can sign
+# provenance but is too old to complete the newer OIDC token-exchange flow
+# Trusted Publishing needs -- npm's own docs/community reports say 11.5.1+
+# is required, and the 404 is npm's real (if confusing) error for that auth
+# failure, not an actual missing-package error. Fixed by explicitly
+# upgrading npm after setup-node, rather than relying on whatever a given
+# Node version happens to bundle.
 name: Publish to npm
 
 on:
@@ -41,6 +53,8 @@ jobs:
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
+      - run: npm install -g npm@latest
+      - run: npm --version
       - run: npm ci --ignore-scripts
       - run: npm test
       - run: npm run build
