@@ -4,7 +4,21 @@
   "description": "n8n community node for BlueVetaUpright — detect and fix sideways/upside-down product photos inside an n8n workflow.",
   "license": "MIT",
   "homepage": "https://blueveta.com/upright",
-  "keywords": ["n8n-community-node-package"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tomerbarm/n8n-nodes-blueveta-upright.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Tomerbarm/n8n-nodes-blueveta-upright/issues"
+  },
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n",
+    "automation",
+    "image-rotation",
+    "photo-rotation",
+    "product-photos"
+  ],
   "n8n": {
     "n8nNodesApiVersion": 1,
     "credentials": ["dist/credentials/BlueVetaUprightApi.credentials.js"],
