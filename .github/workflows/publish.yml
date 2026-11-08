@@ -3,13 +3,25 @@
 # 2026-11-03) require packages published this way (public GitHub repo +
 # npm provenance), not a plain manual `npm publish` from a developer machine.
 #
-# Real setup still needed before this can run for real (not done by this
-# commit — needs npm account access, which this session doesn't have):
-#   1. On npmjs.com, under this package's own "Trusted Publisher" settings,
-#      link it to this repo + this workflow file (npm's OIDC trusted-publishing
-#      flow — no NPM_TOKEN secret needed once linked, npm verifies the GitHub
-#      Actions OIDC token directly). This is the modern, recommended path.
-#   2. Cut a real GitHub Release (or push a `v*` tag) to trigger a real publish.
+# Trusted Publisher (npm OIDC) linked to this repo + this workflow file
+# 2026-11-08 -- no NPM_TOKEN secret needed, npm verifies the GitHub Actions
+# OIDC token directly.
+#
+# REAL BUG FOUND AND FIXED 2026-11-08 (run #1, v0.1.1): a plain `npm ci`
+# fails on GitHub's ubuntu-latest runner -- `n8n-workflow` is a
+# peerDependency, and npm auto-installs peer deps during `ci`, which pulls
+# in `isolated-vm` (one of n8n-workflow's own dependencies, used for its
+# expression-sandbox). isolated-vm needs native C++ compilation (node-gyp),
+# and its prebuilt bindings don't match the runner's current GCC/V8
+# combination -- confirmed via the real build log (`SourceLocation` type
+# errors, `override`/`final` mismatches in V8 headers). This package never
+# actually executes n8n-workflow's runtime code (it's only imported for
+# TypeScript types + one re-exported constant that n8n supplies at runtime
+# when it loads this node) -- confirmed by checking every real import in
+# nodes/ and credentials/. `--ignore-scripts` skips the native build
+# entirely (safe here, since nothing in this package's own build/test ever
+# needs isolated-vm's compiled binary) without skipping the actual package
+# install itself.
 name: Publish to npm
 
 on:
@@ -29,7 +41,7 @@ jobs:
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
-      - run: npm ci
+      - run: npm ci --ignore-scripts
       - run: npm test
       - run: npm run build
       - run: npm publish --provenance --access public
